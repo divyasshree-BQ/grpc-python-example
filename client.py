@@ -12,6 +12,7 @@ from contextlib import contextmanager
 
 from proto import corecast_pb2_grpc, corecast_pb2, request_pb2
 from config import Config, load_config
+from protobuf_utils import print_protobuf_message
 
 
 # Configure logging
@@ -79,6 +80,8 @@ class CoreCastClient:
         if self.config.server.authorization:
             metadata.append(('authorization', f'Bearer {self.config.server.authorization}'))
             logger.debug("Authorization metadata attached")
+        else:
+            logger.warning("No authorization token provided - connection may fail")
         return metadata
     
     def _addr_filter_from_slice(self, addresses: List[str]) -> Optional[request_pb2.AddressFilter]:
@@ -221,8 +224,8 @@ class CoreCastClient:
                 try:
                     # Extract trade information
                     logger.debug(f"Received message: {msg}")
-                    print(msg)
-                    
+
+                    print_protobuf_message(msg)                    
                 except Exception as e:
                     logger.error(f"Error processing trade: {e}")
                     logger.debug(f"Message data: {msg}")
@@ -234,21 +237,7 @@ class CoreCastClient:
         logger.info("Streaming DEX orders. Press Ctrl+C to stop.")
         try:
             for msg in stream:
-                order = msg.order.order
-                logger.info(
-                    "Order",
-                    extra={
-                        "order_id": base58.b58encode(order.order_id).decode('utf-8'),
-                        "buy_side": order.buy_side,
-                        "limit_price": order.limit_price,
-                        "limit_amount": order.limit_amount,
-                        "account": base58.b58encode(order.account).decode('utf-8'),
-                        "pool": base58.b58encode(msg.order.market.market_address).decode('utf-8'),
-                        "program": base58.b58encode(msg.order.dex.program_address).decode('utf-8'),
-                        "base_mint": base58.b58encode(msg.order.market.base_currency.mint_address).decode('utf-8'),
-                        "quote_mint": base58.b58encode(msg.order.market.quote_currency.mint_address).decode('utf-8'),
-                    }
-                )
+                print_protobuf_message(msg)
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -258,17 +247,8 @@ class CoreCastClient:
         try:
             for msg in stream:
                 evt = msg.pool_event
-                logger.info(
-                    "PoolEvent",
-                    extra={
-                        "base_change": evt.base_currency.change_amount,
-                        "quote_change": evt.quote_currency.change_amount,
-                        "program": base58.b58encode(msg.pool_event.dex.program_address).decode('utf-8'),
-                        "base_mint": base58.b58encode(evt.market.base_currency.mint_address).decode('utf-8'),
-                        "quote_mint": base58.b58encode(evt.market.quote_currency.mint_address).decode('utf-8'),
-                        "pool": base58.b58encode(evt.market.market_address).decode('utf-8'),
-                    }
-                )
+                print_protobuf_message(msg)
+                           
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -277,27 +257,7 @@ class CoreCastClient:
         logger.info("Streaming parsed transactions. Press Ctrl+C to stop.")
         try:
             for msg in stream:
-                signer_count = 0
-                if msg.transaction.header:
-                    for acc in msg.transaction.header.accounts:
-                        if acc and acc.is_signer:
-                            signer_count += 1
-                
-                status = False
-                if msg.transaction.status:
-                    status = msg.transaction.status.success
-                
-                logger.info(
-                    "ParsedTransaction",
-                    extra={
-                        "slot": msg.block.slot,
-                        "signature": base58.b58encode(msg.transaction.signature).decode('utf-8'),
-                        "instructions": len(msg.transaction.parsed_idl_instructions),
-                        "signers": signer_count,
-                        "signer": base58.b58encode(msg.transaction.header.signer).decode('utf-8'),
-                        "status": status,
-                    }
-                )
+                print_protobuf_message(msg)
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -306,20 +266,7 @@ class CoreCastClient:
         logger.info("Streaming transfers. Press Ctrl+C to stop.")
         try:
             for msg in stream:
-                t = msg.transfer
-                logger.info(
-                    "Transfer",
-                    extra={
-                        "slot": msg.block.slot,
-                        "tx_index": msg.transaction.index,
-                        "signature": base58.b58encode(msg.transaction.signature).decode('utf-8'),
-                        "mint": base58.b58encode(t.currency.mint_address).decode('utf-8'),
-                        "sender": base58.b58encode(t.sender.address).decode('utf-8'),
-                        "receiver": base58.b58encode(t.receiver.address).decode('utf-8'),
-                        "amount": t.amount,
-                        "instruction_index": t.instruction_index,
-                    }
-                )
+                print_protobuf_message(msg)
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -328,27 +275,7 @@ class CoreCastClient:
         logger.info("Streaming balance updates. Press Ctrl+C to stop.")
         try:
             for msg in stream:
-                b = msg.balance_update
-                
-                address = ""
-                idx = b.balance_update.account_index
-                if msg.transaction.header.accounts[idx]:
-                    acc = msg.transaction.header.accounts[idx]
-                    if acc.address:
-                        address = base58.b58encode(acc.address).decode('utf-8')
-                
-                logger.info(
-                    "BalanceUpdate",
-                    extra={
-                        "slot": msg.block.slot,
-                        "tx_index": msg.transaction.index,
-                        "signature": base58.b58encode(msg.transaction.signature).decode('utf-8'),
-                        "address": address,
-                        "mint": base58.b58encode(b.currency.mint_address).decode('utf-8'),
-                        "pre": b.balance_update.pre_balance,
-                        "post": b.balance_update.post_balance,
-                    }
-                )
+                print_protobuf_message(msg)
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
 

@@ -9,30 +9,24 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## Authentication Setup
+## Authentication
 
-The application requires a BitQuery CoreCast authorization token. For security, tokens are managed through environment variables.
+The application requires a Bitquery CoreCast authorization token.
 
-### Setting up your authorization token:
+### Set your token directly in the YAML config
 
-1. **Set the environment variable:**
-   ```bash
-   export AUTHORIZATION_TOKEN="your_authorization_token_here"
-   ```
+Edit the desired config in `configs/*.yaml` and set `server.authorization` to your token (it starts with `ory_at_...`). Example:
 
-2. **Or create a `.env` file in the project root:**
-   ```bash
-   echo "AUTHORIZATION_TOKEN=your_authorization_token_here" > .env
-   ```
+```yaml
+server:
+  address: "corecast.bitquery.io"
+  insecure: false
+  authorization: "ory_at_your_actual_token_here"
+```
 
-3. **For permanent setup, add to your shell profile:**
-   ```bash
-   echo 'export AUTHORIZATION_TOKEN="your_authorization_token_here"' >> ~/.bashrc
-   # or for zsh:
-   echo 'export AUTHORIZATION_TOKEN="your_authorization_token_here"' >> ~/.zshrc
-   ```
-
-**Note:** Configuration files now use `${AUTHORIZATION_TOKEN}` placeholder instead of hardcoded tokens for security.
+Notes:
+- Your token will be sent as `authorization: Bearer <token>` metadata.
+- Do not commit real tokens to version control.
 
 ## Run
 
@@ -77,7 +71,7 @@ All configuration files follow this structure:
 server:
   address: "corecast.bitquery.io"
   insecure: false            # if false, TLS will be used
-  authorization: "${AUTHORIZATION_TOKEN}"  # environment variable; sent as metadata 'authorization'
+  authorization: "ory_at_..."  # your CoreCast token; sent as metadata 'authorization'
 
 stream:
   type: "dex_trades"  # or dex_orders, dex_pools, transactions, transfers, balances
@@ -177,6 +171,40 @@ client.stream_dex_trades()
 
 # Close connection
 client.close()
+```
+
+## Debugging Utilities
+
+The project includes utility functions for debugging protobuf messages:
+
+### `protobuf_utils.py`
+
+Contains helper functions for working with protobuf messages:
+
+- `print_protobuf_message(msg, indent=0, encoding="base58")` - Pretty print any protobuf message
+- `format_protobuf_message(msg, encoding="base58")` - Format message as string instead of printing
+- `get_protobuf_field_value(msg, field_path)` - Extract specific field values using dot notation
+- `extract_bytes_fields(msg, encoding="base58")` - Extract all bytes fields as a dictionary
+
+### Usage Example
+
+```python
+from protobuf_utils import print_protobuf_message
+
+# In your message handler
+def on_message_received(message):
+    print("Received message:")
+    print_protobuf_message(message)
+    
+    # Or with hex encoding
+    print_protobuf_message(message, encoding="hex")
+```
+
+### Example Script
+
+Run the example script to see usage patterns:
+```bash
+python3 example_protobuf_debug.py
 ```
 
 ## Requirements
