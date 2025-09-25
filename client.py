@@ -229,6 +229,9 @@ class CoreCastClient:
                 except Exception as e:
                     logger.error(f"Error processing trade: {e}")
                     logger.debug(f"Message data: {msg}")
+        except KeyboardInterrupt:
+            logger.info("Stream interrupted by user")
+            raise
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -238,6 +241,9 @@ class CoreCastClient:
         try:
             for msg in stream:
                 print_protobuf_message(msg)
+        except KeyboardInterrupt:
+            logger.info("Stream interrupted by user")
+            raise
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -248,6 +254,9 @@ class CoreCastClient:
             for msg in stream:
                 evt = msg.pool_event
                 print_protobuf_message(msg)
+        except KeyboardInterrupt:
+            logger.info("Stream interrupted by user")
+            raise
                            
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
@@ -258,6 +267,9 @@ class CoreCastClient:
         try:
             for msg in stream:
                 print_protobuf_message(msg)
+        except KeyboardInterrupt:
+            logger.info("Stream interrupted by user")
+            raise
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -267,6 +279,9 @@ class CoreCastClient:
         try:
             for msg in stream:
                 print_protobuf_message(msg)
+        except KeyboardInterrupt:
+            logger.info("Stream interrupted by user")
+            raise
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
@@ -276,6 +291,9 @@ class CoreCastClient:
         try:
             for msg in stream:
                 print_protobuf_message(msg)
+        except KeyboardInterrupt:
+            logger.info("Stream interrupted by user")
+            raise
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
 
@@ -288,7 +306,8 @@ def signal_handler():
     def signal_handler_func(signum, frame):
         nonlocal interrupted
         interrupted = True
-        logger.debug("Interrupt received, stopping stream...")
+        logger.info("Interrupt received, stopping stream...")
+        raise KeyboardInterrupt()
     
     # Set up signal handlers
     original_sigint = signal.signal(signal.SIGINT, signal_handler_func)
