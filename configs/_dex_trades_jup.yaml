@@ -1,11 +1,11 @@
 server:
   address: "corecast.bitquery.io"
-  authorization: "ory_"
+  authorization: "ory_at_"
   insecure: false
 
 stream:
   type: "dex_trades"
-  
+
 filters:
   programs:
     - "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4" # jupiter

@@ -1,21 +1,21 @@
 server:
   address: "corecast.bitquery.io"
-  authorization: "ory_"
+  authorization: "ory_at_"
   insecure: false
 
 stream:
   type: "dex_trades"
-  
+
 filters:
   programs:
-    - "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"  # pumpswap
-    - "SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe"  # solfi
+    - "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA" # pumpswap
+    - "SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe" # solfi
     - "PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY" # phoenix
     - "BSwp6bEBihVLdqJRKGgzjcGLHkcTuzmSo1TQkHepzH8p" # bonkswap
     - "obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y" # obric
     - "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4" # jupiter
   tokens:
-    - "So11111111111111111111111111111111111111112"  # WSOL
+    - "So11111111111111111111111111111111111111112" # WSOL
 #  pool: # Market.MarketAddress
 #    - "5tUu7bX8d8Zz1v3v4Y9H9F6J7K8L9M0N1O2P3Q4R5S6T"
 #  traders: # Trade.Buy.Account / Trade.Sell.Account
