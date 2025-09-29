@@ -1,19 +1,19 @@
-# bitquery-grpc-proto
+# bitquery-corecast-proto
 
 A Python package containing gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC.
 
 ## Installation
 
 ```bash
-pip install bitquery-grpc-proto
+pip install bitquery-corecast-proto
 ```
 
 ## Quick Start
 
 ```python
 import grpc
-from proto import corecast_pb2, corecast_pb2_grpc
-from proto import stream_message_pb2
+from bitquery_corecast_proto import corecast_pb2, corecast_pb2_grpc
+from bitquery_corecast_proto import stream_message_pb2
 
 # Import Solana protobuf definitions
 from solana import token_block_message_pb2, dex_block_message_pb2
@@ -29,10 +29,10 @@ response = stub.StreamMessages(request)
 
 ## Available Modules
 
-- `proto.corecast_pb2` - Core request/response messages
-- `proto.corecast_pb2_grpc` - gRPC service stubs
-- `proto.stream_message_pb2` - Stream message definitions
-- `proto.request_pb2` - Request message definitions
+- `bitquery_corecast_proto.corecast_pb2` - Core request/response messages
+- `bitquery_corecast_proto.corecast_pb2_grpc` - gRPC service stubs
+- `bitquery_corecast_proto.stream_message_pb2` - Stream message definitions
+- `bitquery_corecast_proto.request_pb2` - Request message definitions
 
 ## Solana Dependencies
 

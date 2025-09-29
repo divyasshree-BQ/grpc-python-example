@@ -3,8 +3,8 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bitquery-grpc-proto"
-version = "1.0.1"
+name = "bitquery-corecast-proto"
+version = "1.0.2"
 description = "gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -39,7 +39,7 @@ Repository = "https://github.com/bitquery/grpc-code-samples/tree/main"
 Issues = "https://github.com/bitquery/grpc-code-samples/issues"
 
 [tool.setuptools.packages.find]
-include = ["proto*", "solana*"]
+include = ["bitquery_corecast_proto*", "proto*", "solana*"]
 
 [tool.setuptools.package-data]
 "*" = ["*.proto"]

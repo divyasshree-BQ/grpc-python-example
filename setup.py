@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Setup script for bitquery-grpc-proto package."""
+"""Setup script for bitquery-corecast-proto package."""
 
 from setuptools import setup, find_packages
 import os
@@ -14,8 +14,8 @@ with open(os.path.join(this_directory, 'requirements.txt'), encoding='utf-8') as
     requirements = [line.strip() for line in f if line.strip() and not line.startswith('#')]
 
 setup(
-    name="bitquery-grpc-proto",
-    version="1.0.1",
+    name="bitquery-corecast-proto",
+    version="1.0.2",
     author="Divyasshree",
     author_email="divyasshree@bitquery.io",
     description="gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC",

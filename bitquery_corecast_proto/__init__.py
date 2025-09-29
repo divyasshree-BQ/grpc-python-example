@@ -1,15 +1,16 @@
 """
-gRPC Proto Package
+Bitquery CoreCast Proto Package
 
-This package contains generated Python protobuf classes for CoreCast gRPC services.
+This package contains generated Python protobuf classes for Bitquery CoreCast gRPC services.
 It includes definitions for streaming Solana blockchain data.
 
 Usage:
-    from proto import corecast_pb2, corecast_pb2_grpc
-    from proto.solana.corecast import stream_message_pb2
+    from bitquery_corecast_proto import corecast_pb2, corecast_pb2_grpc
+    from bitquery_corecast_proto import stream_message_pb2
+    from solana import token_block_message_pb2, dex_block_message_pb2
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 # Import main protobuf modules for easy access
 try:
