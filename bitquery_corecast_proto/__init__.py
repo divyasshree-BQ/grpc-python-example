@@ -10,7 +10,7 @@ Usage:
     from solana import token_block_message_pb2, dex_block_message_pb2
 """
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 # Import main protobuf modules for easy access
 try:

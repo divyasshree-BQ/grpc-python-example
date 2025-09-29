@@ -15,7 +15,7 @@ with open(os.path.join(this_directory, 'requirements.txt'), encoding='utf-8') as
 
 setup(
     name="bitquery-corecast-proto",
-    version="1.0.2",
+    version="1.0.3",
     author="Divyasshree",
     author_email="divyasshree@bitquery.io",
     description="gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC",
