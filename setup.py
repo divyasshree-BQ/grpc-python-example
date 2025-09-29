@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Setup script for grpc-proto package."""
+"""Setup script for bitquery-grpc-proto package."""
 
 from setuptools import setup, find_packages
 import os
@@ -15,13 +15,13 @@ with open(os.path.join(this_directory, 'requirements.txt'), encoding='utf-8') as
 
 setup(
     name="bitquery-grpc-proto",
-    version="1.0.0",
+    version="1.0.1",
     author="Divyasshree",
     author_email="divyasshree@bitquery.io",
     description="gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/grpc-python-example",
+    url="https://docs.bitquery.io/docs/category/grpc-streams/",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",

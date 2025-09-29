@@ -9,7 +9,7 @@ Usage:
     from proto.solana.corecast import stream_message_pb2
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 # Import main protobuf modules for easy access
 try:

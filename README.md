@@ -1,4 +1,4 @@
-# grpc-proto
+# bitquery-grpc-proto
 
 A Python package containing gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC.
 
