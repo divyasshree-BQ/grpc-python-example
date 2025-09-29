@@ -12,7 +12,7 @@ from contextlib import contextmanager
 
 from bitquery_corecast_proto import corecast_pb2_grpc, corecast_pb2, request_pb2
 from config import Config, load_config
-from protobuf_utils import print_protobuf_message
+from protobuf_utils import print_protobuf_message, save_message_to_json
 
 
 # Configure logging
@@ -218,14 +218,15 @@ class CoreCastClient:
     
     def _consume_dex_trades(self, stream):
         """Consume DEX trades stream."""
-        logger.info("Streaming DEX trades. Press Ctrl+C to stop.")
+        logger.info("Streaming DEX trades. Saving first message to JSON file.")
         try:
             for msg in stream:
                 try:
-                    # Extract trade information
-                    logger.debug(f"Received message: {msg}")
-
-                    print_protobuf_message(msg)                    
+                    # Save first message to JSON file
+                    logger.info("Received first DEX trade message, saving to JSON...")
+                    save_message_to_json(msg, "dex_trade_message.json")
+                    logger.info("Message saved successfully. Exiting.")
+                    return
                 except Exception as e:
                     logger.error(f"Error processing trade: {e}")
                     logger.debug(f"Message data: {msg}")
@@ -237,10 +238,13 @@ class CoreCastClient:
     
     def _consume_dex_orders(self, stream):
         """Consume DEX orders stream."""
-        logger.info("Streaming DEX orders. Press Ctrl+C to stop.")
+        logger.info("Streaming DEX orders. Saving first message to JSON file.")
         try:
             for msg in stream:
-                print_protobuf_message(msg)
+                logger.info("Received first DEX order message, saving to JSON...")
+                save_message_to_json(msg, "dex_order_message.json")
+                logger.info("Message saved successfully. Exiting.")
+                return
         except KeyboardInterrupt:
             logger.info("Stream interrupted by user")
             raise
@@ -249,24 +253,28 @@ class CoreCastClient:
     
     def _consume_dex_pools(self, stream):
         """Consume DEX pool events stream."""
-        logger.info("Streaming DEX pool events. Press Ctrl+C to stop.")
+        logger.info("Streaming DEX pool events. Saving first message to JSON file.")
         try:
             for msg in stream:
-                evt = msg.pool_event
-                print_protobuf_message(msg)
+                logger.info("Received first DEX pool event message, saving to JSON...")
+                save_message_to_json(msg, "dex_pool_message.json")
+                logger.info("Message saved successfully. Exiting.")
+                return
         except KeyboardInterrupt:
             logger.info("Stream interrupted by user")
             raise
-                           
         except grpc.RpcError as e:
             logger.debug(f"Stream ended: {e}")
     
     def _consume_parsed_transactions(self, stream):
         """Consume parsed transactions stream."""
-        logger.info("Streaming parsed transactions. Press Ctrl+C to stop.")
+        logger.info("Streaming parsed transactions. Saving first message to JSON file.")
         try:
             for msg in stream:
-                print_protobuf_message(msg)
+                logger.info("Received first transaction message, saving to JSON...")
+                save_message_to_json(msg, "transaction_message.json")
+                logger.info("Message saved successfully. Exiting.")
+                return
         except KeyboardInterrupt:
             logger.info("Stream interrupted by user")
             raise
@@ -275,10 +283,13 @@ class CoreCastClient:
     
     def _consume_transfers_tx(self, stream):
         """Consume transfers stream."""
-        logger.info("Streaming transfers. Press Ctrl+C to stop.")
+        logger.info("Streaming transfers. Saving first message to JSON file.")
         try:
             for msg in stream:
-                print_protobuf_message(msg)
+                logger.info("Received first transfer message, saving to JSON...")
+                save_message_to_json(msg, "transfer_message.json")
+                logger.info("Message saved successfully. Exiting.")
+                return
         except KeyboardInterrupt:
             logger.info("Stream interrupted by user")
             raise
@@ -287,10 +298,13 @@ class CoreCastClient:
     
     def _consume_balances_tx(self, stream):
         """Consume balance updates stream."""
-        logger.info("Streaming balance updates. Press Ctrl+C to stop.")
+        logger.info("Streaming balance updates. Saving first message to JSON file.")
         try:
             for msg in stream:
-                print_protobuf_message(msg)
+                logger.info("Received first balance update message, saving to JSON...")
+                save_message_to_json(msg, "balance_message.json")
+                logger.info("Message saved successfully. Exiting.")
+                return
         except KeyboardInterrupt:
             logger.info("Stream interrupted by user")
             raise

@@ -51,3 +51,14 @@ Thumbs.db
 .env.local
 .env.production
 .env.development
+
+configs/dex_orders.yaml
+configs/dex_pools.yaml
+configs/dex_trades.yaml
+configs/transfers.yaml
+configs/transactions.yaml
+configs/balances.yaml   
+solana_dex_pool.json
+.gitignore
+.gitignore
+balance_message.json

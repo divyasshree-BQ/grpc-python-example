@@ -2,6 +2,7 @@
 Utility functions for working with protobuf messages.
 """
 import base58
+import json
 from google.protobuf.descriptor import FieldDescriptor
 
 
@@ -141,3 +142,71 @@ def extract_bytes_fields(msg, encoding="base58"):
                     bytes_fields[field.name] = value.hex()
     
     return bytes_fields
+
+
+def protobuf_to_dict(msg, encoding="base58"):
+    """
+    Convert a protobuf message to a dictionary for JSON serialization.
+    
+    Args:
+        msg: The protobuf message to convert
+        encoding: Encoding for bytes fields ("base58" or "hex")
+        
+    Returns:
+        Dictionary representation of the protobuf message
+    """
+    result = {}
+    
+    for field in msg.DESCRIPTOR.fields:
+        value = getattr(msg, field.name)
+        
+        if field.label == FieldDescriptor.LABEL_REPEATED:
+            if not value:
+                continue
+            result[field.name] = []
+            for item in value:
+                if field.type == FieldDescriptor.TYPE_MESSAGE:
+                    result[field.name].append(protobuf_to_dict(item, encoding))
+                elif field.type == FieldDescriptor.TYPE_BYTES:
+                    if encoding == "base58":
+                        result[field.name].append(base58.b58encode(item).decode())
+                    else:
+                        result[field.name].append(item.hex())
+                else:
+                    result[field.name].append(item)
+        
+        elif field.type == FieldDescriptor.TYPE_MESSAGE:
+            if msg.HasField(field.name):
+                result[field.name] = protobuf_to_dict(value, encoding)
+        
+        elif field.type == FieldDescriptor.TYPE_BYTES:
+            if encoding == "base58":
+                result[field.name] = base58.b58encode(value).decode()
+            else:
+                result[field.name] = value.hex()
+        
+        elif field.containing_oneof:
+            if msg.WhichOneof(field.containing_oneof.name) == field.name:
+                result[field.name] = value
+        
+        else:
+            result[field.name] = value
+    
+    return result
+
+
+def save_message_to_json(msg, filename="message.json", encoding="base58"):
+    """
+    Save a protobuf message to a JSON file.
+    
+    Args:
+        msg: The protobuf message to save
+        filename: Output JSON filename
+        encoding: Encoding for bytes fields ("base58" or "hex")
+    """
+    message_dict = protobuf_to_dict(msg, encoding)
+    
+    with open(filename, 'w') as f:
+        json.dump(message_dict, f, indent=2, ensure_ascii=False)
+    
+    print(f"Message saved to {filename}")

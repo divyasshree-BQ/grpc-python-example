@@ -1,13 +1,11 @@
 server:
   address: "corecast.bitquery.io"
-  authorization: "ory_at_"
+  authorization: "ory_at_RZn6icn8P2_RxKnB2OFZBnndN21JWXrGr2QDb98MevE.CGFYvLoyvDefJi1iO_P0AMhqea1GY8cHQrxAqElm9gk"
   insecure: false
 
 stream:
   type: "balances"
 
 filters:
-  addresses:
-    - "DSqMPMsMAbEJVNuPKv1ZFdzt6YvJaDPDddfeW7ajtqds"
   tokens:
     - "So11111111111111111111111111111111111111112" # SOL
