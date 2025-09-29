@@ -1,0 +1,6 @@
+include README.md
+include requirements.txt
+include LICENSE*
+recursive-include proto *.py
+recursive-include proto *.proto
+# Note: solana proto files are provided by bitquery-pb2-kafka-package

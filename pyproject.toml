@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bitquery-grpc-proto"
+version = "1.0.0"
+description = "gRPC protobuf definitions and generated Python code for Bitquery CoreCast Solana gRPC"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Divyasshree", email = "divyasshree@bitquery.io"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Networking",
+]
+dependencies = [
+    "grpcio>=1.60.0",
+    "grpcio-tools>=1.60.0",
+    "protobuf>=6.30.0,<7.0.0",
+    "bitquery-pb2-kafka-package",
+]
+
+[project.urls]
+Homepage = "https://docs.bitquery.io/docs/category/grpc-streams/"
+Repository = "https://github.com/bitquery/grpc-code-samples/tree/main"
+Issues = "https://github.com/bitquery/grpc-code-samples/issues"
+
+[tool.setuptools.packages.find]
+include = ["proto*", "solana*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.proto"]
